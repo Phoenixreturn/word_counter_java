@@ -9,12 +9,14 @@ import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class WordCounter {
 
 	public static void main(String[] args) throws IOException {
 		Path path = Paths.get("C:/ABBA.txt");
-	    Map<String, Long> wordCount = Files.lines(path, Charset.forName("windows-1251")).flatMap(line -> Arrays.stream(line.trim().split("\\s"))) 
+		Stream<String> lines = Files.lines(path, Charset.forName("windows-1251"));
+	    Map<String, Long> wordCount = lines.flatMap(line -> Arrays.stream(line.trim().split("\\s"))) 
 	            .map(word -> word.replaceAll("[^à-ÿÀ-ß]", "").toLowerCase().trim())
 	            .filter(word -> word.length() > 0)
 	            .map(word -> new SimpleEntry<>(word, 1))
