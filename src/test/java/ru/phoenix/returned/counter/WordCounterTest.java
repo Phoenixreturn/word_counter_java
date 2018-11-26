@@ -4,66 +4,49 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import org.junit.After;
-import org.junit.Before;
+import java.util.Arrays;
+import java.util.Map;
+import java.util.stream.Stream;
+
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
-public class CalculatorTestSuccessful {
-//	private static ICalculator calculator;
-//
-//	@BeforeClass
-//	public static void initCalculator() {
-////		calculator = new Calculator();
-//	}
-//
-//	@Before
-//	public void beforeEachTest() {
-//		System.out.println("This is executed before each Test");
-//	}
-//
-//	@After
-//	public void afterEachTest() {
-//		System.out.println("This is exceuted after each Test");
-//	}
-//
-//	@Test
-//	public void testSum() {
-//		int result = calculator.sum(3, 4);
-//
-//		assertEquals(7, result);
-//	}
-//
-//	@Test
-//	public void testDivison() {
-//		try {
-//			int result = calculator.divison(10, 2);
-//
-//			assertEquals(5, result);
-//		} catch (Exception e) {
-//			e.printStackTrace(System.err);
-//		}
-//	}
-//
-//	@Test(expected = Exception.class)
-//	public void testDivisionException() throws Exception {
-//		calculator.divison(10, 0);
-//	}
-//
-//	@Ignore
-//	@Test
-//	public void testEqual() {
-//		boolean result = calculator.equalIntegers(20, 20);
-//
-//		assertFalse(result);
-//	}
-//
-//	@Ignore
-//	@Test
-//	public void testSubstraction() {
-//		int result = 10 - 3;
-//
-//		assertTrue(result == 9);
-//	}
+public class WordCounterTest {
+	static Stream<String> lines;
+	static Map<String, Long> wordCount;
+
+	@BeforeClass
+	public static void initTestData() {
+		String[] testData = { "привет –оберт привет как дела привет роберт как дела это ћатрица",
+				"привет –оберт привет как дела привет роберт как дела музыка",
+				"привет –оберт привет как дела привет роберт как дела истина",
+				"привет –оберт привет как дела привет роберт как дела спокойствие",
+				"привет –оберт привет как дела привет роберт как дела дзен" };
+
+		lines = Arrays.stream(testData);
+		wordCount = WordCounter.getWordCounts(lines);
+	}
+
+	@Test
+	public void testCount() {
+		assertEquals(10, wordCount.size());
+	}
+	
+	@Test
+	public void testFirstWord() {
+		assertTrue(wordCount.containsKey("привет"));
+		assertEquals(Long.valueOf(15), wordCount.get("привет"));
+	}	
+	
+	@Test
+	public void testSecondWord() {
+		assertTrue(wordCount.containsKey("роберт"));
+		assertEquals(Long.valueOf(10), wordCount.get("роберт"));
+	}	
+	
+	@Test
+	public void testThirdWord() {
+		assertTrue(wordCount.containsKey("дзен"));
+		assertEquals(Long.valueOf(1), wordCount.get("дзен"));
+	}	
 }
