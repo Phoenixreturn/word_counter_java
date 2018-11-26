@@ -1,49 +1,25 @@
 package ru.phoenix.returned.counter;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.function.Consumer;
-import java.lang.Integer;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.AbstractMap.SimpleEntry;
+import java.util.Arrays;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class WordCounter {
 
-	public static void main(String[] args) {
-
-		// creating sample Collection
-		List<Integer> myList = new ArrayList<Integer>();
-		for (int i = 0; i < 10; i++)
-			myList.add(i);
-
-		// traversing using Iterator
-		Iterator<Integer> it = myList.iterator();
-		while (it.hasNext()) {
-			Integer i = it.next();
-			System.out.println("Iterator Value::" + i);
-		}
-
-		// traversing through forEach method of Iterable with anonymous class
-		myList.forEach(new Consumer<Integer>() {
-
-			public void accept(Integer t) {
-				System.out.println("forEach anonymous class Value::" + t);
-			}
-
-		});
-
-		// traversing with Consumer interface implementation
-		MyConsumer action = new MyConsumer();
-		myList.forEach(action);
-
+	public static void main(String[] args) throws IOException {
+		Path path = Paths.get("C:/ABBA.txt");
+	    Map<String, Long> wordCount = Files.lines(path, Charset.forName("windows-1251")).flatMap(line -> Arrays.stream(line.trim().split("\\s"))) 
+	            .map(word -> word.replaceAll("[^à-ÿÀ-ß]", "").toLowerCase().trim())
+	            .filter(word -> word.length() > 0)
+	            .map(word -> new SimpleEntry<>(word, 1))
+	            .collect(Collectors.groupingBy(SimpleEntry::getKey, Collectors.counting()));
+	 
+	    wordCount.forEach((k, v) -> System.out.println(String.format("%s ==>> %d", k, v)));
 	}
-
-}
-
-//Consumer implementation that can be reused
-class MyConsumer implements Consumer<Integer> {
-
-	public void accept(Integer t) {
-		System.out.println("Consumer impl Value::" + t);
-	}
-
 }
