@@ -9,6 +9,7 @@ import java.nio.file.Paths;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -18,8 +19,11 @@ public class WordCounter {
 	public static final String FILE_PATH = "C:/ABBA.txt";
 
 	public static void main(String[] args)  {
-		
-		Path path = Paths.get(FILE_PATH);
+		Scanner scanner = new Scanner(System.in);
+		System.out.print("¬ведите абсолютный путь до файла: ");
+		System.out.flush();
+		String filename = scanner.nextLine();
+		Path path = Paths.get(filename);
 		Stream<String> lines;
 		try {
 			lines = Files.lines(path, Charset.forName("windows-1251"));
